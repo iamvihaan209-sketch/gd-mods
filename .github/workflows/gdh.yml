@@ -11,9 +11,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [mac]
+        target: [MacOS]
     name: ${{ matrix.target }}
-    runs-on: macos-latest
+    runs-on: macos-26-intel
     steps:
       - uses: actions/checkout@v4
 
@@ -30,7 +30,7 @@ jobs:
 
   package:
     name: Package GDH
-    runs-on: macos-26-intel
+    runs-on: macos-15-intel
     needs: [build]
     steps:
       - uses: geode-sdk/build-geode-mod/combine@main
@@ -38,5 +38,5 @@ jobs:
       - name: Upload merged geode
         uses: actions/upload-artifact@v4
         with:
-          name: gdh-geode-mac
+          name: gdh-geode-macos
           path: ${{ steps.build.outputs.build-output }}/*.geode
