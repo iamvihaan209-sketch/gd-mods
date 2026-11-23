@@ -17,6 +17,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Download macOS FFmpeg libs
+        run: |
+          mkdir -p gdh/libs/ffmpeg/mac
+          # If you have a direct link to a built mac ffmpeg archive (.zip/.7z), download it here:
+          # curl -L --retry 3 -o ffmpeg-mac.zip <your-mac-ffmpeg-url>
+          # unzip ffmpeg-mac.zip -d gdh/libs/ffmpeg/mac/
+          
+          # Alternatively, if you need to place/verify the path:
+          ls -R gdh/libs/ffmpeg
+
       - name: Build GDH
         uses: geode-sdk/build-geode-mod@main
         with:
