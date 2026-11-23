@@ -13,19 +13,16 @@ jobs:
       matrix:
         target: [MacOS]
     name: ${{ matrix.target }}
-    runs-on: macos-15-intel
+    runs-on: macos-26-intel
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download macOS FFmpeg libs
+      - name: Install FFmpeg via Homebrew
         run: |
+          brew install ffmpeg
           mkdir -p gdh/libs/ffmpeg/mac
-          # If you have a direct link to a built mac ffmpeg archive (.zip/.7z), download it here:
-          # curl -L --retry 3 -o ffmpeg-mac.zip <your-mac-ffmpeg-url>
-          # unzip ffmpeg-mac.zip -d gdh/libs/ffmpeg/mac/
-          
-          # Alternatively, if you need to place/verify the path:
-          ls -R gdh/libs/ffmpeg
+          ln -s $(brew --prefix ffmpeg)/include gdh/libs/ffmpeg/include || true
+          ln -s $(brew --prefix ffmpeg)/lib gdh/libs/ffmpeg/mac/lib || true
 
       - name: Build GDH
         uses: geode-sdk/build-geode-mod@main
@@ -40,7 +37,7 @@ jobs:
 
   package:
     name: Package GDH
-    runs-on: macos-15-intel
+    runs-on: macos-26-intel
     needs: [build]
     steps:
       - uses: geode-sdk/build-geode-mod/combine@main
